@@ -8,18 +8,83 @@ output:
     fig_width: 5
     smaller: yes
 ---
+packages needed so far 
+```{r}
+library(tibble) # used to create tibbles
+library(tidyr) # used to tidy up data
+library(rmarkdown) # dynamic document 
+library(ggplot2) # used for data visualization
+library(dplyr) # used for data manipulation
+library(shiny) # used for showing dynamic visuals in collaboration with ggvis
+library(prettydoc)# used for creating pretty documents from R markdown
+library(knitr)#for dynamic report generation
+library(tidyverse)# multiple tidy up data packages here
+library(hms) # used to install kableExtra package
+library(kableExtra) # used to construct Complex Table for data
+library(dplyr) # used to install tigris package
+library(tigris) # used to make states map
+#added library for other graphs
+library(plotly)
+library(rjson)
+library(leaflet)
+library(leaflet.providers)
+library(maps)
+library(viridis)
+library(viridisLite)
+library(sp)
+library(quantmod)
+library(sf)
+library(RColorBrewer)
+library(gganimate)
+library(countrycode)
+
+```
+
+The big questions is what am I doing with this dataset and answering for. 
+1st question I could explore is other types of Energy such as wind, solar, other renewable are better in terms of 
+2nd. Is Renewable better than oil and gas in long term 
+3rd. Are oil and gas energy levels higher than other renewable energy such solar, energy, 
+4th, detail into the difference of energy consumption of wind, solar, other renewable resources. 
+ a. Create a interactive bubble graph of countries that use the most renewable energy resource. 
+5th. Visually show the difference of energy consumption between countries in renewable vs 
+6th. Countries 
+
+follow similarily to the tableau project but make it your own. Maybe go in details of the difference of wind, solar, some type of energy compared to oil and gas. Which countries are using which energy more. 
+
+
+VISUAL REPRESENTATION 
+1. create graphs of countries leaflet plotly of the percentile of most used energy used 
+2. graphs bar graphs, 
+3. bubble map 
+4. maybe 3d graph 
+5. interactive maps/ bubble map/ graphs/ 
+
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-Testing to see if change are made 
 ```
 
-## R Markdown
+# WIP Introduction 
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+- this introduction discusses the meta data of the two data sets from kaggle and what they are. 
+- Explain the terms that might be unknown to people
+- at the end briefly describe the big question that is gonna to be ask which is renewable vs non-renewable 
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+1. First question are what are the renewable energy consumptions and what are the non-renewable resources, Which countries are utilizes the most of which energy source, See which are oil, gas, then the renewable ones. 
+
+link the two datasets here [] 
+
+the first sets of visual graphs will display the dataset of the renewable sources vs the non-renewable in a dataframe that has been manupulated. 
+
+Then display it by showing through leaflet map of countries, bubble map, discover new maps to use it for, use interactive things on R to visually show the energy consumptions levels, and the per capita level, then population
+
+
+For the dataframe I need from the world dataset only I need columns of 
+1. countries 
+2. year 
+3. 
 
 ```{r cars}
 summary(cars)
@@ -30,7 +95,28 @@ summary(cars)
 You can also embed plots, for example:
 
 ```{r pressure, echo=FALSE}
-plot(pressure)
+
+states <- states(cb = TRUE, class = "sf") %>% 
+  filter(!as.numeric(STATEFP) %in% c(2, 15, 60, 66, 69, 72, 78)) %>%
+  mutate(var = rnorm(nrow(.)))
+
+
+
+
+
+library(plotly)
+
+g <- list(
+  projection = list(
+    type = 'orthographic'
+  ),
+  showland = TRUE,
+  landcolor = toRGB("#e5ecf6")
+)
+
+fig <- plot_ly(type = 'scattergeo', mode = 'markers')
+fig <- fig %>% layout(geo = g)
+fig
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
