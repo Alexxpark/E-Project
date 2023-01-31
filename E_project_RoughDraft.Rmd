@@ -37,7 +37,7 @@ library(sf)
 library(RColorBrewer)
 library(gganimate)
 library(countrycode)
-
+library(shinydashboard)
 ```
 
 The big questions is what am I doing with this dataset and answering for. 
@@ -89,8 +89,30 @@ For the dataframe I need from the world dataset only I need columns of
 ```{r}
 unzip(zipfile="./worldEnergyConsumption.zip")
 Energydata <- read.csv("World Energy Consumption.csv")
-glimpse(Energydata)
+Energydata
 
+```
+
+```{r}
+require("shinydashboard")
+shinyApp(
+  ui = dashboardPage(
+    dashboardHeader(title = "Dashboard Demo"),
+    dashboardSidebar(),
+    dashboardBody(uiOutput("icon"))
+  ),
+  server = function(input, output) {
+    output$icon <- renderUI(
+      htmltools::HTML('<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span>')
+    )
+  }
+)
+```
+
+
+
+
+```{r}
 Updated_E_data <- Energydata %>% select(iso_code, country, year, biofuel_electricity, hydro_electricity, nuclear_electricity, solar_electricity, wind_electricity, other_renewable_electricity, coal_electricity, gas_electricity, oil_electricity, biofuel_elec_per_capita, hydro_elec_per_capita, nuclear_elec_per_capita, solar_elec_per_capita, wind_elec_per_capita, coal_elec_per_capita, gas_elec_per_capita, oil_elec_per_capita, population)
 
 Updated_E_data <- na.omit(Updated_E_data)
@@ -104,12 +126,6 @@ Updated_E_data %>%
 You can also embed plots, for example:
 
 ```{r pressure, echo=FALSE}
-
-states <- states(cb = TRUE, class = "sf") %>% 
-  filter(!as.numeric(STATEFP) %in% c(2, 15, 60, 66, 69, 72, 78)) %>%
-  mutate(var = rnorm(nrow(.)))
-
-
 
 
 
