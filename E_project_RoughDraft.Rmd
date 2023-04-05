@@ -2,8 +2,9 @@
 title: "Work in progress title for E project"
 author: "Alexander Park"
 date: "2023-01-26"
-output: 
-  slidy_presentation: 
+output:
+  beamer_presentation: default
+  slidy_presentation:
     fig_height: 3
     fig_width: 5
     smaller: yes
@@ -90,9 +91,30 @@ For the dataframe I need from the world dataset only I need columns of
 ```{r}
 unzip(zipfile="./worldEnergyConsumption.zip")
 Energydata <- read.csv("World Energy Consumption.csv")
+Energydata
 
 
 ```
+
+```{r}
+Updated_E_data <- Energydata %>% select(iso_code, country, year, biofuel_electricity, hydro_electricity, nuclear_electricity, solar_electricity, wind_electricity, other_renewable_electricity, coal_electricity, gas_electricity, oil_electricity, biofuel_elec_per_capita, hydro_elec_per_capita, nuclear_elec_per_capita, solar_elec_per_capita, wind_elec_per_capita, coal_elec_per_capita, gas_elec_per_capita, oil_elec_per_capita, population)
+
+Updated_E_data <- na.omit(Updated_E_data)
+Updated_E_data 
+
+
+Updated_E_data_new <- Updated_E_data %>%
+ gather(key = "Fuel Types", value = "production", 
+         biofuel_electricity:oil_electricity, 
+         biofuel_elec_per_capita:oil_elec_per_capita) %>%
+  filter(!is.na(production))
+
+Updated_E_data_new
+
+```
+
+
+
 
 ```{r}
 Updated_E_data <- Energydata %>% select(iso_code, country, year, biofuel_electricity, hydro_electricity, nuclear_electricity, solar_electricity, wind_electricity, other_renewable_electricity, coal_electricity, gas_electricity, oil_electricity, biofuel_elec_per_capita, hydro_elec_per_capita, nuclear_elec_per_capita, solar_elec_per_capita, wind_elec_per_capita, coal_elec_per_capita, gas_elec_per_capita, oil_elec_per_capita, population)
@@ -105,31 +127,7 @@ Updated_E_data %>%
 
 
 UpdatedA_E_Data <- melt(Updated_E_data, id=c("iso_code", "country", "year", "population"), variable_name = "Fuel Types", value.name = "Production" )             
-UpdatedA_E_Data 
-
-
-
-
-```
-
-
-
-
-```{r}
-Updated_E_data <- Energydata %>% select(iso_code, country, year, biofuel_electricity, hydro_electricity, nuclear_electricity, solar_electricity, wind_electricity, other_renewable_electricity, coal_electricity, gas_electricity, oil_electricity, biofuel_elec_per_capita, hydro_elec_per_capita, nuclear_elec_per_capita, solar_elec_per_capita, wind_elec_per_capita, coal_elec_per_capita, gas_elec_per_capita, oil_elec_per_capita, population)
-
-Updated_E_data <- na.omit(Updated_E_data)
-Updated_E_data %>% 
-  kbl() %>% kable_paper()  %>% scroll_box(height = "800px")
-
-
-
-
-UpdatedA_E_Data <- melt(Updated_E_data, id=c("iso_code", "country", "year", "population"), variable_name = "Fuel Types", value.name = "Production" )             
-UpdatedA_E_Data 
-
-
-
+UpdatedA_E_Data %>% rename('FUEL' = "Fuel Type")
 ```
 
 ## Including Plots
